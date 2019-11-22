@@ -27,7 +27,8 @@ public interface ParticiperFacadeLocal {
     List<Participer> findAll();
 
     List<Participer> findRange(int[] range);
-
+    
+    
     int count();
     
 }

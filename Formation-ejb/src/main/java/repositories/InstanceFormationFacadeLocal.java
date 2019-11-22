@@ -27,7 +27,9 @@ public interface InstanceFormationFacadeLocal {
     List<InstanceFormation> findAll();
 
     List<InstanceFormation> findRange(int[] range);
-
+    
+    List<InstanceFormation> findByIdFNb(int idF,int nbMax);
+    
     int count();
     
 }

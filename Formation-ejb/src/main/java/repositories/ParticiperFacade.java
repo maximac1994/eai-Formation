@@ -6,6 +6,7 @@
 package repositories;
 
 import entities.Participer;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -28,5 +29,6 @@ public class ParticiperFacade extends AbstractFacade<Participer> implements Part
     public ParticiperFacade() {
         super(Participer.class);
     }
+  
     
 }

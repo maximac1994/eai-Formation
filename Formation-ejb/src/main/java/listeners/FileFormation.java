@@ -6,9 +6,11 @@
 package listeners;
 
 import MessagesTypes.DemandeFormationMessage;
+import business.GestionFormationLocal;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.ActivationConfigProperty;
+import javax.ejb.EJB;
 import javax.ejb.MessageDriven;
 import javax.jms.JMSException;
 import javax.jms.Message;
@@ -25,7 +27,8 @@ import javax.jms.ObjectMessage;
         @ActivationConfigProperty(propertyName = "destinationType", propertyValue = "javax.jms.Queue")
 })
 public class FileFormation implements MessageListener {
-    
+    @EJB
+    GestionFormationLocal gfl;
     public FileFormation() {
     }
     
@@ -41,7 +44,7 @@ public class FileFormation implements MessageListener {
         
         if(o instanceof DemandeFormationMessage){
             DemandeFormationMessage dfm = (DemandeFormationMessage)o;
-            
+            gfl.traiterDemandeFormation(dfm);
         }
     }
     

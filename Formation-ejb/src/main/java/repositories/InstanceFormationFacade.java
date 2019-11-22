@@ -6,6 +6,8 @@
 package repositories;
 
 import entities.InstanceFormation;
+import entities.Participer;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -28,5 +30,18 @@ public class InstanceFormationFacade extends AbstractFacade<InstanceFormation> i
     public InstanceFormationFacade() {
         super(InstanceFormation.class);
     }
+
+    @Override
+    public List<InstanceFormation> findByIdFNb(int idF, int nbMax) {
+        
+                List<InstanceFormation> liste = em.createNamedQuery("InstanceFormation.findByIdPartNbParticipants")
+                .setParameter("idF", idF)
+                .setParameter("nbMax", nbMax)
+                .getResultList();
+                return liste;
+    }
+
+   
+    
     
 }

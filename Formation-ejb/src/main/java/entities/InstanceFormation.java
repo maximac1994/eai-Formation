@@ -37,7 +37,10 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "InstanceFormation.findByDateDebut", query = "SELECT i FROM InstanceFormation i WHERE i.dateDebut = :dateDebut")
     , @NamedQuery(name = "InstanceFormation.findByEtat", query = "SELECT i FROM InstanceFormation i WHERE i.etat = :etat")
     , @NamedQuery(name = "InstanceFormation.findByDateFin", query = "SELECT i FROM InstanceFormation i WHERE i.dateFin = :dateFin")
-    , @NamedQuery(name = "InstanceFormation.findByDateCreation", query = "SELECT i FROM InstanceFormation i WHERE i.dateCreation = :dateCreation")})
+    , @NamedQuery(name = "InstanceFormation.findByDateCreation", query = "SELECT i FROM InstanceFormation i WHERE i.dateCreation = :dateCreation")
+    , @NamedQuery(name = "InstanceFormation.findByNbParticipants", query = "SELECT i FROM InstanceFormation i WHERE i.nbParticipants = :nbParticipants")
+    , @NamedQuery(name = "InstanceFormation.findByIdFormateur", query = "SELECT i FROM InstanceFormation i WHERE i.idFormateur = :idFormateur")
+, @NamedQuery(name = "InstanceFormation.findByIdPartNbParticipants", query = "SELECT i FROM InstanceFormation i WHERE i.nbParticipants < :nbMax AND i.idFormation = :idF")})
 public class InstanceFormation implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -50,13 +53,9 @@ public class InstanceFormation implements Serializable {
     @NotNull
     @Column(name = "idFormation")
     private int idFormation;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 10)
+    @Size(max = 10)
     @Column(name = "numeroSalle")
     private String numeroSalle;
-    @Basic(optional = false)
-    @NotNull
     @Column(name = "dateDebut")
     @Temporal(TemporalType.DATE)
     private Date dateDebut;
@@ -65,8 +64,6 @@ public class InstanceFormation implements Serializable {
     @Size(min = 1, max = 100)
     @Column(name = "etat")
     private String etat;
-    @Basic(optional = false)
-    @NotNull
     @Column(name = "dateFin")
     @Temporal(TemporalType.DATE)
     private Date dateFin;
@@ -75,6 +72,12 @@ public class InstanceFormation implements Serializable {
     @Column(name = "dateCreation")
     @Temporal(TemporalType.DATE)
     private Date dateCreation;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "nbParticipants")
+    private int nbParticipants;
+    @Column(name = "idFormateur")
+    private Integer idFormateur;
 
     public InstanceFormation() {
     }
@@ -83,14 +86,12 @@ public class InstanceFormation implements Serializable {
         this.idInstance = idInstance;
     }
 
-    public InstanceFormation(Integer idInstance, int idFormation, String numeroSalle, Date dateDebut, String etat, Date dateFin, Date dateCreation) {
+    public InstanceFormation(Integer idInstance, int idFormation, String etat, Date dateCreation, int nbParticipants) {
         this.idInstance = idInstance;
         this.idFormation = idFormation;
-        this.numeroSalle = numeroSalle;
-        this.dateDebut = dateDebut;
         this.etat = etat;
-        this.dateFin = dateFin;
         this.dateCreation = dateCreation;
+        this.nbParticipants = nbParticipants;
     }
 
     public Integer getIdInstance() {
@@ -147,6 +148,22 @@ public class InstanceFormation implements Serializable {
 
     public void setDateCreation(Date dateCreation) {
         this.dateCreation = dateCreation;
+    }
+
+    public int getNbParticipants() {
+        return nbParticipants;
+    }
+
+    public void setNbParticipants(int nbParticipants) {
+        this.nbParticipants = nbParticipants;
+    }
+
+    public Integer getIdFormateur() {
+        return idFormateur;
+    }
+
+    public void setIdFormateur(Integer idFormateur) {
+        this.idFormateur = idFormateur;
     }
 
     @Override

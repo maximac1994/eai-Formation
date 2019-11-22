@@ -5,6 +5,7 @@
  */
 package business;
 
+import MessagesTypes.DemandeFormationMessage;
 import javax.ejb.Local;
 
 /**
@@ -13,5 +14,7 @@ import javax.ejb.Local;
  */
 @Local
 public interface GestionFormationLocal {
+
+    public void traiterDemandeFormation(DemandeFormationMessage demande);
     
 }
