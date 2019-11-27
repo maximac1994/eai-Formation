@@ -30,7 +30,9 @@ public class GestionFormation implements GestionFormationLocal {
 
     @Override
     public void traiterDemandeFormation(DemandeFormationMessage demande) {
-
+        System.out.println("[FORMATION] : traitement dommande formation");
+        int seuilValid = demande.getNbMin();
+        int seuilProjet = demande.getNbMin()/2;
         int nbPart = demande.getNbParticipants();
         int nbAffecte = 0;
         int idF = demande.getIdFormation();
@@ -45,17 +47,25 @@ public class GestionFormation implements GestionFormationLocal {
                 instF = generateNewInstance(idF);
             }
         }
-
+        System.out.println("[FORMATION] : nombre de participants :"+nbPart+"");
+        
         // participation = formation and nb partiicpant < nbMax
         // partiicpation : ajout entreprise
         while (nbAffecte < nbPart) {
+            System.out.println("[FORMATION] : instance traitee :"+instF.toString()+"");
             nb = instF.getNbParticipants();
-            Participer p = createParticipation(demande.getCodeEntreprise(), instF.getIdInstance());
+            ParticiperPK pk = new ParticiperPK(demande.getCodeEntreprise(),instF.getIdInstance());
+            Participer p = pfl.find(pk);
+            if(p==null){
+                p = createParticipation(demande.getCodeEntreprise(), instF.getIdInstance());
+            }
+            
             int nbLibres = demande.getNbMax() - nb;
+            System.out.println("[FORMATION] : places libres : "+nbLibres);
             int nbReste = nbPart - nbAffecte;
             for (int i = 0; i < nbLibres && i < nbReste; i++) {
                 nbAffecte++;
-                ajoutParticipant(p, instF);
+                ajoutParticipant(p, instF,seuilProjet,seuilValid);
             }
             if (nbAffecte < nbPart) {
                 InstanceFormation newInstF = new InstanceFormation();
@@ -69,32 +79,43 @@ public class GestionFormation implements GestionFormationLocal {
         }
     }
 
-    private void ajoutParticipant(Participer p, InstanceFormation i) {
+    private void ajoutParticipant(Participer p, InstanceFormation i,int seuilProjet, int seuilValid) {
+        System.out.println("[FORMATION] : ajout participant");
+        int nbAvant = i.getNbParticipants();
         p.setNbParticipants(p.getNbParticipants() + 1);
         i.setNbParticipants(i.getNbParticipants() + 1);
+        int nbApres = i.getNbParticipants();
+        if((nbAvant<seuilProjet)&&(nbApres>=seuilProjet)){
+            //en projet
+        }
+        if((nbAvant<seuilValid)&&(nbApres>=seuilValid)){
+            // valid
+        }
     }
 
     private InstanceFormation generateNewInstance(int idF) {
+        System.out.println("[FORMATION] : creation nouvelle instance");
         InstanceFormation newInstF = new InstanceFormation();
         newInstF.setDateCreation(new Date());
         newInstF.setIdFormation(idF);
         newInstF.setEtat("cree");
         newInstF.setNbParticipants(0);
         iffl.create(newInstF);
-        System.out.println(newInstF.getIdInstance());
         return newInstF;
     }
 
     private Participer createParticipation(String codeE, int idInst) {
+        System.out.println("[FORMATION] : creation nouvelle participation");
         Participer p = new Participer();
         p.setNbParticipants(0);
         ParticiperPK ppk = new ParticiperPK();
         ppk.setCodeEntreprise(codeE);
         ppk.setIdInstance(idInst);
-        System.out.println(ppk.getCodeEntreprise());
         p.setParticiperPK(ppk);
         pfl.create(p);
         return p;
     }
+
+    
 
 }

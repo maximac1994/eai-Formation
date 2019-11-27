@@ -5,6 +5,7 @@
  */
 package repositories;
 
+import entities.InstanceFormation;
 import entities.Participer;
 import java.util.List;
 import javax.ejb.Stateless;
@@ -29,6 +30,8 @@ public class ParticiperFacade extends AbstractFacade<Participer> implements Part
     public ParticiperFacade() {
         super(Participer.class);
     }
+
+    
   
     
 }

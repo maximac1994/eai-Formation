@@ -34,6 +34,7 @@ public class FileFormation implements MessageListener {
     
     @Override
     public void onMessage(Message message) {
+        System.out.println("[Formation] : reception message]");
         ObjectMessage om = (ObjectMessage)message;
         Object o = null;
         try {
