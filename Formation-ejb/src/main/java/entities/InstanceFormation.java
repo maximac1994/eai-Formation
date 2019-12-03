@@ -56,6 +56,8 @@ public class InstanceFormation implements Serializable {
     @Size(max = 10)
     @Column(name = "numeroSalle")
     private String numeroSalle;
+    @Column(name = "duree")
+    private int duree;
     @Column(name = "dateDebut")
     @Temporal(TemporalType.DATE)
     private Date dateDebut;
@@ -166,6 +168,16 @@ public class InstanceFormation implements Serializable {
         this.idFormateur = idFormateur;
     }
 
+    public int getDuree() {
+        return duree;
+    }
+
+    public void setDuree(int duree) {
+        this.duree = duree;
+    }
+
+    
+    
     @Override
     public int hashCode() {
         int hash = 0;

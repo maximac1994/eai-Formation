@@ -6,6 +6,8 @@
 package business;
 
 import MessagesTypes.DemandeFormationMessage;
+import MessagesTypes.ListeFormateursCompatibles;
+import MessagesTypes.ListeSallesCompatibles;
 import javax.ejb.Local;
 
 /**
@@ -16,5 +18,6 @@ import javax.ejb.Local;
 public interface GestionFormationLocal {
 
     public void traiterDemandeFormation(DemandeFormationMessage demande);
-    
+    public void traiterListeFormateurs(ListeFormateursCompatibles dfm);
+    public void traiterListeSalles(ListeSallesCompatibles dfm);
 }

@@ -6,6 +6,8 @@
 package listeners;
 
 import MessagesTypes.DemandeFormationMessage;
+import MessagesTypes.ListeFormateursCompatibles;
+import MessagesTypes.ListeSallesCompatibles;
 import business.GestionFormationLocal;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -46,6 +48,14 @@ public class FileFormation implements MessageListener {
         if(o instanceof DemandeFormationMessage){
             DemandeFormationMessage dfm = (DemandeFormationMessage)o;
             gfl.traiterDemandeFormation(dfm);
+        }
+        if(o instanceof ListeFormateursCompatibles){
+            ListeFormateursCompatibles dfm = (ListeFormateursCompatibles)o;
+            gfl.traiterListeFormateurs(dfm);
+        }
+        if(o instanceof ListeSallesCompatibles){
+            ListeSallesCompatibles dfm = (ListeSallesCompatibles)o;
+            gfl.traiterListeSalles(dfm);
         }
     }
     

@@ -6,6 +6,9 @@
 package repositories;
 
 import entities.Entreprise;
+import entities.InstanceFormation;
+import java.util.ArrayList;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -27,6 +30,18 @@ public class EntrepriseFacade extends AbstractFacade<Entreprise> implements Entr
 
     public EntrepriseFacade() {
         super(Entreprise.class);
+    }
+
+    @Override
+    public List<String> getListMails(int id) {
+        List<Entreprise> liste = em.createNamedQuery("Entreprise.findEtsByIdInstance")
+                .setParameter("idInst", id)
+                .getResultList();
+        List<String> listToReturn = new ArrayList<>();
+        for (Entreprise e : liste){
+        listToReturn.add(e.getMailContact());
+        }
+        return listToReturn;
     }
     
 }

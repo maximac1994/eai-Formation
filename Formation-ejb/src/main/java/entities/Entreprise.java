@@ -28,7 +28,10 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Entreprise.findAll", query = "SELECT e FROM Entreprise e")
     , @NamedQuery(name = "Entreprise.findByCodeEntreprise", query = "SELECT e FROM Entreprise e WHERE e.codeEntreprise = :codeEntreprise")
     , @NamedQuery(name = "Entreprise.findByNom", query = "SELECT e FROM Entreprise e WHERE e.nom = :nom")
-    , @NamedQuery(name = "Entreprise.findByMailContact", query = "SELECT e FROM Entreprise e WHERE e.mailContact = :mailContact")})
+    , @NamedQuery(name = "Entreprise.findByMailContact", query = "SELECT e FROM Entreprise e WHERE e.mailContact = :mailContact")
+, @NamedQuery(name = "Entreprise.findEtsByIdInstance", query = "SELECT e FROM Entreprise e, Participer p WHERE e.codeEntreprise = p.participerPK.codeEntreprise AND p.participerPK.idInstance = :idInst")})
+
+
 public class Entreprise implements Serializable {
 
     private static final long serialVersionUID = 1L;

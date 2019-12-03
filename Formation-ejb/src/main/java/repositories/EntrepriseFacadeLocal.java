@@ -28,6 +28,8 @@ public interface EntrepriseFacadeLocal {
 
     List<Entreprise> findRange(int[] range);
 
+    List<String> getListMails(int id);
+    
     int count();
     
 }
