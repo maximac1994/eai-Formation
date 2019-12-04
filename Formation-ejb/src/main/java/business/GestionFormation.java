@@ -101,7 +101,7 @@ public class GestionFormation implements GestionFormationLocal {
                 newInstF.setDuree(duree);
                 newInstF.setDateCreation(new Date());
                 newInstF.setIdFormation(idF);
-                newInstF.setEtat("cree");
+                newInstF.setEtat("EN_ATTENTE");
                 newInstF.setNbParticipants(0);
                 iffl.create(newInstF);
                 instF = newInstF;
@@ -125,7 +125,7 @@ public class GestionFormation implements GestionFormationLocal {
         }
         if((nbAvant<seuilValid)&&(nbApres>=seuilValid)){
             System.out.println("[FORMATION] : passage valide");
-            if("projet".equals(i.getEtat())){
+            if("EN_PROJET".equals(i.getEtat())){
                 sendValidation(i);
             }else{
                 formationsAValider.add(i);
@@ -138,7 +138,7 @@ public class GestionFormation implements GestionFormationLocal {
         InstanceFormation newInstF = new InstanceFormation();
         newInstF.setDateCreation(new Date());
         newInstF.setIdFormation(idF);
-        newInstF.setEtat("cree");
+        newInstF.setEtat("EN_ATTENTE");
         newInstF.setNbParticipants(0);
         newInstF.setDuree(duree);
         iffl.create(newInstF);
@@ -159,26 +159,27 @@ public class GestionFormation implements GestionFormationLocal {
 
     private int calcDuree(Date dateDebut, Date dateFin) {
         int duree = 0;
-        Date day = dateDebut;
+        Date day = new Date(dateDebut.getTime());
         while(day.before(dateFin)){
             DateFormat df = new SimpleDateFormat("EEEE");
             String nomJour = df.format(day);
-            if( (!"samedi".equals(day)) && (!"dimanche".equals(day))){
-                day.setTime(day.getTime()+(25*3600*1000));
+            if( (!"samedi".equals(nomJour)) && (!"dimanche".equals(nomJour))){
                 duree++;
             }
+            day.setTime(day.getTime()+(25*3600*1000));
         }
         return duree;
     }
 
     private void sendValidation(InstanceFormation i) {
         EvenementFormationValidation efv = new EvenementFormationValidation();
+            
             efv.setDateDebut(i.getDateDebut());
             int duree = calcDuree(i.getDateDebut(),i.getDateFin());
             efv.setDuree(duree);
             efv.setIdFormateur(i.getIdFormateur());
             efv.setIdInstance(i.getIdInstance());
-            efv.setIdSalle(efv.getIdSalle());
+            efv.setIdSalle(i.getNumeroSalle());
             efv.setMails(efl.getListMails(i.getIdInstance()));
             System.out.println("[TEST A SUPPR] : "+efl.getListMails(i.getIdInstance()).get(0));
             topicFormation.sendEvent(efv, "validation");
@@ -253,6 +254,7 @@ public class GestionFormation implements GestionFormationLocal {
         inF.setNumeroSalle(numSalle);
         inF.setDateDebut(dayDebut);
         inF.setDateFin(addJour(dayDebut, duree));
+        inF.setEtat("EN_PROJET");
         EvenementFormationProjet2 ev = new EvenementFormationProjet2();
         ev.setDateDebut(dayDebut);
         ev.setDuree(duree);
@@ -260,10 +262,14 @@ public class GestionFormation implements GestionFormationLocal {
         ev.setIdInstance(salles.getIdInstance());
         ev.setIdSalle(numSalle);
         topicFormation.sendEvent(ev, "projet2");
+        if(formationsAValider.contains(inF)){
+            sendValidation(inF);
+        }
     }
     
       
-      private Date addJour(Date d, int n){
+      private Date addJour(Date dat, int n){
+          Date d = new Date(dat.getTime());
       for(int i = 0; i<n ; i++){
           DateFormat df = new SimpleDateFormat("EEEE");
             String nomJour = df.format(d);
