@@ -48,7 +48,9 @@ public class GestionFormation implements GestionFormationLocal {
     HashMap<Integer, ListeSallesCompatibles> sallesEnAttente;
     HashMap<Integer, ListeFormateursCompatibles> formateursEnAttente;
     
-    
+    /**
+     *
+     */
     public GestionFormation(){
     topicFormation = new TopicFormation();
     

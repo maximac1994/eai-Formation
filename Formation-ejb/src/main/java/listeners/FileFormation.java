@@ -20,7 +20,7 @@ import javax.jms.MessageListener;
 import javax.jms.ObjectMessage;
 
 /**
- *
+ * File Formation qui recoit les demande de froamtion et les listes de ressources compatibles
  * @author Maxime
  */
 @MessageDriven(activationConfig = {
@@ -31,9 +31,17 @@ import javax.jms.ObjectMessage;
 public class FileFormation implements MessageListener {
     @EJB
     GestionFormationLocal gfl;
+
+    /**
+     *
+     */
     public FileFormation() {
     }
     
+    /**
+     * reception d'un message : analyse de l'entete JMS pour determiner le traitement
+     * @param message
+     */
     @Override
     public void onMessage(Message message) {
         System.out.println("[Formation] : reception message]");

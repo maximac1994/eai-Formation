@@ -21,7 +21,7 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
 /**
- *
+ * Topic formation
  * @author Maxime
  */
 public class TopicFormation {
@@ -34,6 +34,9 @@ public class TopicFormation {
     Session session = null;
     MessageProducer sender = null;
 
+    /**
+     * creation contexte
+     */
     public void createContext() {
         try {
             // create the JNDI initial context.
@@ -47,6 +50,10 @@ public class TopicFormation {
         } 
     }
 
+    /**
+     * connection JMS
+     * @throws JMSException
+     */
     public void connect() throws JMSException {
         // create the connection
         connection = factory.createConnection();
@@ -58,6 +65,11 @@ public class TopicFormation {
         connection.start();
     }
 
+    /**
+     * envoie un evenement vers le topic FORMATION. Il sera ensuite analysé par les autres applis
+     * @param ev
+     * @param type
+     */
     public void sendEvent(EvenementFormation ev, String type) {
        
             try {
@@ -76,6 +88,9 @@ public class TopicFormation {
             }
     }
 
+    /**
+     * fermeture de la connection
+     */
     public void close() {
         // close the context
         if (context != null) {
